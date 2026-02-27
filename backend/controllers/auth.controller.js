@@ -39,7 +39,7 @@ const loginUser = async (req, res) => {
             sameSite: "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
-        res.json({ accessToken });
+        res.status(200).json({ accessToken });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -64,7 +64,7 @@ const refreshToken = async (req, res) => {
 
         const accessToken = generateAccessToken(user._id, user.role, user.tokenVersion);
 
-        res.json({ accessToken });
+        res.status(200).json({ accessToken });
     } catch (error) {
         return res.status(403).json({ message: "Invalid or expired refresh token" });
     }
@@ -76,7 +76,7 @@ const logoutUser = (req, res) => {
         secure: true,
         sameSite: "strict"
     });
-    res.json({ message: "Logged out successfully" });
+    res.status(200).json({ message: "Logged out successfully" });
 }
 
 module.exports = { registerUser, loginUser, refreshToken, logoutUser };
