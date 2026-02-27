@@ -8,19 +8,35 @@ const api = axios.create({
     withCredentials: true, // This is crucial to send/receive the HttpOnly Refresh Token Cookie!
 });
 
-// Store access token in memory
+// Store access token strictly in JavaScript memory (Secure from XSS)
 let accessToken = null;
+
+export const getAccessToken = () => accessToken;
 
 export const setAccessToken = (token) => {
     accessToken = token;
+};
+
+// Expose a function to explicitly fetch a fresh token immediately on app load
+export const silentRefresh = async () => {
+    try {
+        const response = await axios.post(`${API_URL}/users/refresh-token`, {}, { withCredentials: true });
+        setAccessToken(response.data.accessToken);
+        return response.data.accessToken;
+    } catch (error) {
+        // If we can't silently refresh, it just means they are truly logged out.
+        setAccessToken(null);
+        return null;
+    }
 };
 
 // --- Request Interceptor ---
 // Automatically attach the Bearer token to every request if we have it
 api.interceptors.request.use(
     (config) => {
-        if (accessToken) {
-            config.headers.Authorization = `Bearer ${accessToken}`;
+        const token = getAccessToken();
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },
