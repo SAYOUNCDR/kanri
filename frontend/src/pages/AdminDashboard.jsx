@@ -14,13 +14,11 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
-  const [users, setUsers] = useState([]); // List of all users for the dropdown
+  const [users, setUsers] = useState([]);
 
-  // Modal States
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
 
-  // Filters state
   const [statusFilter, setStatusFilter] = useState("");
   const [userIdFilter, setUserIdFilter] = useState("");
 
@@ -31,7 +29,7 @@ const AdminDashboard = () => {
     }
     fetchTasks();
     fetchAllUsers();
-  }, [statusFilter, userIdFilter]); // Re-fetch whenever filters change
+  }, [statusFilter, userIdFilter]);
 
   const fetchAllUsers = async () => {
     try {
@@ -45,7 +43,6 @@ const AdminDashboard = () => {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      // Build the filter object based on current
       const filters = {};
       if (statusFilter) filters.status = statusFilter;
       if (userIdFilter) filters.userId = userIdFilter;
@@ -70,14 +67,12 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen font-sans p-8 relative">
-      {/* Background Image Container */}
       <div className="absolute inset-0 z-0">
         <img
           src="/Landing.png"
           alt="Scenic landscape"
           className="w-full h-full object-cover"
         />
-        {/* Soft black overlay to ensure form readability */}
         <div className="absolute inset-0 bg-black/15"></div>
       </div>
 
@@ -112,39 +107,72 @@ const AdminDashboard = () => {
       </div>
 
       <div className="max-w-6xl mx-auto space-y-6 relative z-10">
-        {/* Filters Section */}
         <div className="bg-white/70 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-white/40 flex flex-wrap gap-4 items-end">
           <div className="flex flex-col gap-1.5 flex-grow max-w-xs">
             <label className="text-sm font-medium text-zinc-800">
               Filter by Status
             </label>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 rounded-lg bg-white/50 border border-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm transition-all"
-            >
-              <option value="">All Statuses</option>
-              <option value="pending">Pending</option>
-              <option value="completed">Completed</option>
-            </select>
+            <div className="relative">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="w-full appearance-none px-4 pr-10 py-2 rounded-lg bg-white/50 border border-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm transition-all cursor-pointer"
+              >
+                <option value="">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-zinc-500">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-col gap-1.5 flex-grow max-w-sm">
             <label className="text-sm font-medium text-zinc-800">
               Filter by User
             </label>
-            <select
-              value={userIdFilter}
-              onChange={(e) => setUserIdFilter(e.target.value)}
-              className="px-4 py-2 rounded-lg bg-white/50 border border-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm transition-all text-zinc-900"
-            >
-              <option value="">All Users</option>
-              {users.map((u) => (
-                <option key={u._id} value={u._id}>
-                  {u.username} ({u.email})
-                </option>
-              ))}
-            </select>
+            <div className="relative">
+              <select
+                value={userIdFilter}
+                onChange={(e) => setUserIdFilter(e.target.value)}
+                className="w-full appearance-none px-4 pr-10 py-2 rounded-lg bg-white/50 border border-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm transition-all text-zinc-900 cursor-pointer"
+              >
+                <option value="">All Users</option>
+                {users.map((u) => (
+                  <option key={u._id} value={u._id}>
+                    {u.username} ({u.email})
+                  </option>
+                ))}
+              </select>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-zinc-500">
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  ></path>
+                </svg>
+              </div>
+            </div>
           </div>
 
           <div className="flex gap-2 ml-auto">
@@ -163,7 +191,6 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Data Table Section */}
         <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 overflow-hidden">
           {loading ? (
             <div className="text-center py-12 text-zinc-600 animate-pulse font-medium">
@@ -250,8 +277,6 @@ const AdminDashboard = () => {
           )}
         </div>
       </div>
-
-      {/* --- MODALS --- */}
       <RegisterModal
         isOpen={isRegisterModalOpen}
         onClose={() => setIsRegisterModalOpen(false)}

@@ -32,11 +32,9 @@ const UserDashboard = () => {
   };
 
   const handleStatusUpdate = async (taskId, currentStatus) => {
-    // Only allow updating from pending -> completed for now
     if (currentStatus === "completed") return;
 
     try {
-      // Optimistic UI update
       setTasks(
         tasks.map((t) =>
           t._id === taskId ? { ...t, status: "completed" } : t,
@@ -45,7 +43,6 @@ const UserDashboard = () => {
       await taskService.updateTaskStatus(taskId, "completed");
     } catch (error) {
       console.error("Failed to update status", error);
-      // Revert on failure
       fetchTasks();
     }
   };
@@ -61,14 +58,12 @@ const UserDashboard = () => {
 
   return (
     <div className="min-h-screen font-sans p-8 relative">
-      {/* Background Image Container */}
       <div className="absolute inset-0 z-0">
         <img
           src="/Landing.png"
           alt="Scenic landscape"
           className="w-full h-full object-cover"
         />
-        {/* Soft black overlay to ensure form readability */}
         <div className="absolute inset-0 bg-black/15"></div>
       </div>
 

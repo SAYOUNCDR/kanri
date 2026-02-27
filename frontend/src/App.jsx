@@ -11,7 +11,6 @@ function App() {
 
   useEffect(() => {
     const initializeAuth = async () => {
-      // Attempt to silently refresh the token on page load using the HttpOnly cookie
       await silentRefresh();
       setIsInitializing(false);
     };

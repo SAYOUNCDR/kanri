@@ -1,31 +1,26 @@
-import api, { setAccessToken } from './api';
+import api, { setAccessToken } from "./api";
 
 export const authService = {
-    // Login standard user or admin
-    login: async (email, password) => {
-        const response = await api.post('/users/login', { email, password });
-        if (response.data.accessToken) {
-            setAccessToken(response.data.accessToken);
-        }
-        return response.data;
-    },
-
-    // Logout (clears HttpOnly cookie on backend)
-    logout: async () => {
-        await api.post('/users/logout');
-        setAccessToken(null);
-    },
-
-    // Register a new User or Admin (Only accessible by Admins)
-    registerUser: async (userData) => {
-        // userData should be { username, email, password, role }
-        const response = await api.post('/users/register-user', userData);
-        return response.data;
-    },
-
-    // Fetch all users (Only accessible by Admins)
-    getAllUsers: async () => {
-        const response = await api.get('/users/get-all-users');
-        return response.data;
+  login: async (email, password) => {
+    const response = await api.post("/users/login", { email, password });
+    if (response.data.accessToken) {
+      setAccessToken(response.data.accessToken);
     }
+    return response.data;
+  },
+
+  logout: async () => {
+    await api.post("/users/logout");
+    setAccessToken(null);
+  },
+
+  registerUser: async (userData) => {
+    const response = await api.post("/users/register-user", userData);
+    return response.data;
+  },
+
+  getAllUsers: async () => {
+    const response = await api.get("/users/get-all-users");
+    return response.data;
+  },
 };

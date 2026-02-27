@@ -18,8 +18,6 @@ const Login = () => {
 
     try {
       const data = await authService.login(email, password);
-
-      // Decode the token to discover the role
       const decodedToken = jwtDecode(data.accessToken);
 
       if (decodedToken.role === "admin") {
@@ -44,11 +42,8 @@ const Login = () => {
           alt="Scenic landscape"
           className="w-full h-full object-cover"
         />
-        {/* Soft black overlay across the entire image to ensure form readability */}
         <div className="absolute inset-0 bg-black/15"></div>
       </div>
-
-      {/* Back Button - Top Right Absolute */}
       <button
         onClick={() => navigate("/")}
         className="absolute top-8 left-8 text-sm font-medium text-white/80 hover:text-white transition-colors flex items-center gap-1 z-20 px-4 py-2 bg-black/20 hover:bg-black/40 backdrop-blur-sm rounded-lg border border-white/20 shadow-sm cursor-pointer"

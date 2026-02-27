@@ -7,18 +7,15 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen flex flex-col font-sans select-none">
-      {/* Background Image Container */}
       <div className="absolute inset-0 z-0">
         <img
           src="/Landing.png"
           alt="Scenic landscape"
           className="w-full h-full object-cover"
         />
-        {/* Gradient overlay to ensure text readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-white/90 via-white/30 to-transparent"></div>
       </div>
 
-      {/* Navbar */}
       <nav className="relative z-10 flex justify-between items-center px-4 py-4 mx-auto mt-8 w-[80%] max-w-5xl rounded-2xl bg-white/40 backdrop-blur-md border border-white/30 shadow-sm">
         <div className="flex items-center gap-2 cursor-pointer">
           <span className="text-xl font-bold tracking-tight">Kanri</span>
@@ -39,7 +36,6 @@ const Landing = () => {
         <Button onClick={() => navigate("/login")}>Login</Button>
       </nav>
 
-      {/* Main Content Area */}
       <main className="relative z-10 flex-grow flex flex-col justify-end items-center text-center px-4 w-full max-w-4xl mx-auto pb-10">
         <h1 className="text-4xl md:text-4xl font-bold tracking-tight text-zinc-900 mb-6 leading-tight ">
           Role-based task management
