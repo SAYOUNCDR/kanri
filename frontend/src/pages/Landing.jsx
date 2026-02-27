@@ -20,19 +20,6 @@ const Landing = () => {
         <div className="flex items-center gap-2 cursor-pointer">
           <span className="text-xl font-bold tracking-tight">Kanri</span>
         </div>
-
-        <div className="hidden md:flex gap-8 text-sm font-medium text-gray-800">
-          <button className="hover:text-black transition-colors">
-            Product
-          </button>
-          <button className="hover:text-black transition-colors">
-            Features
-          </button>
-          <button className="hover:text-black transition-colors">
-            Company
-          </button>
-        </div>
-
         <Button onClick={() => navigate("/login")}>Login</Button>
       </nav>
 
