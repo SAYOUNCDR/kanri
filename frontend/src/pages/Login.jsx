@@ -1,16 +1,39 @@
 import { useState } from "react";
 import Button from "../components/reusables/Button";
 import { useNavigate } from "react-router-dom";
+import { authService } from "../services/auth.service";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
   const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // TODO: Add actual API login logic here
-    console.log("Logging in with", email, password);
+    setError("");
+    setIsLoading(true);
+
+    try {
+      const data = await authService.login(email, password);
+
+      // Decode the token to discover the role
+      const decodedToken = jwtDecode(data.accessToken);
+
+      if (decodedToken.role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/user/dashboard");
+      }
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Login failed. Please true again.",
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -38,9 +61,15 @@ const Login = () => {
           <h2 className="text-2xl font-bold text-center  text-zinc-900 mt-2">
             Welcome back
           </h2>
-          <p className="text-sm text-center text-zinc-500 mt-1">
+          <p className="text-sm text-center text-zinc-500 mt-1 mb-4">
             Enter your credentials to access your account.
           </p>
+
+          {error && (
+            <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg border border-red-100 text-center animate-pulse">
+              {error}
+            </div>
+          )}
         </div>
 
         <form onSubmit={handleLogin} className="space-y-10">
@@ -81,8 +110,11 @@ const Login = () => {
           </div>
 
           <div className="pt-2">
-            <Button className="w-full py-2.5 flex justify-center text-sm shadow-sm">
-              Sign in
+            <Button
+              className="w-full py-2.5 flex justify-center text-sm shadow-sm"
+              disabled={isLoading}
+            >
+              {isLoading ? "Signing in..." : "Sign in"}
             </Button>
           </div>
         </form>
