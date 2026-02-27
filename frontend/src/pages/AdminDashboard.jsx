@@ -5,6 +5,8 @@ import { taskService } from "../services/task.service";
 import { getAccessToken } from "../services/api";
 import { jwtDecode } from "jwt-decode";
 import Button from "../components/reusables/Button";
+import RegisterModal from "../components/modals/RegisterModal";
+import AssignTaskModal from "../components/modals/AssignTaskModal";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -13,6 +15,10 @@ const AdminDashboard = () => {
   const [user, setUser] = useState(null);
 
   const [users, setUsers] = useState([]); // List of all users for the dropdown
+
+  // Modal States
+  const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
+  const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
 
   // Filters state
   const [statusFilter, setStatusFilter] = useState("");
@@ -39,7 +45,7 @@ const AdminDashboard = () => {
   const fetchTasks = async () => {
     setLoading(true);
     try {
-      // Build the filter object based on current state
+      // Build the filter object based on current
       const filters = {};
       if (statusFilter) filters.status = statusFilter;
       if (userIdFilter) filters.userId = userIdFilter;
@@ -140,6 +146,21 @@ const AdminDashboard = () => {
               ))}
             </select>
           </div>
+
+          <div className="flex gap-2 ml-auto">
+            <Button
+              onClick={() => setIsRegisterModalOpen(true)}
+              className="py-2.5 px-4 bg-zinc-900 hover:bg-black text-white"
+            >
+              + New User
+            </Button>
+            <Button
+              onClick={() => setIsAssignModalOpen(true)}
+              className="py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white shadow-[0_0_15px_rgba(37,99,235,0.4)] border-none"
+            >
+              + Assign Task
+            </Button>
+          </div>
         </div>
 
         {/* Data Table Section */}
@@ -229,6 +250,20 @@ const AdminDashboard = () => {
           )}
         </div>
       </div>
+
+      {/* --- MODALS --- */}
+      <RegisterModal
+        isOpen={isRegisterModalOpen}
+        onClose={() => setIsRegisterModalOpen(false)}
+        onSuccess={fetchAllUsers}
+      />
+
+      <AssignTaskModal
+        isOpen={isAssignModalOpen}
+        onClose={() => setIsAssignModalOpen(false)}
+        onSuccess={fetchTasks}
+        users={users}
+      />
     </div>
   );
 };
