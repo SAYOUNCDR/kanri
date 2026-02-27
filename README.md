@@ -1,7 +1,7 @@
 # Kanri
 
 <div align="center">
-  <img src="./frontend/public/Landing.png" alt="Kanri Dashboard Preview" width="100%" style="border-radius: 12px; margin-bottom: 20px;">
+  <img src="./frontend/public/Demo.png" alt="Kanri Dashboard Preview" width="100%" style="border-radius: 12px; margin-bottom: 20px;">
 </div>
 
 Kanri is a sleek, role-based task management application built with a focus on clean UI and secure access control. It provides separate, tailored experiences for standard users and system administrators.
