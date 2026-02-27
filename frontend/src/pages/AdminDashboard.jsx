@@ -44,33 +44,46 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans p-8">
-      <div className="max-w-6xl mx-auto flex justify-between items-center mb-8">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">✳</span>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
+    <div className="min-h-screen font-sans p-8 relative">
+      {/* Background Image Container */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/Landing.png"
+          alt="Scenic landscape"
+          className="w-full h-full object-cover"
+        />
+        {/* Soft black overlay to ensure form readability */}
+        <div className="absolute inset-0 bg-black/15"></div>
+      </div>
+
+      <div className="max-w-6xl mx-auto flex justify-between items-center mb-8 relative z-10">
+        <div className="flex items-center gap-2 flex-col">
+          <h1 className="text-2xl font-bold text-white drop-shadow-sm">
             Admin Console
           </h1>
+          <span className="text-sm text-white/70 drop-shadow-sm">
+            {new Date().toLocaleString()}
+          </span>
         </div>
         <Button
           onClick={handleLogout}
-          className="px-5 py-2 text-sm bg-white text-black border-gray-300 hover:bg-gray-100"
+          className="px-5 py-2 text-sm bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-md shadow-sm"
         >
           Logout
         </Button>
       </div>
 
-      <div className="max-w-6xl mx-auto space-y-6">
+      <div className="max-w-6xl mx-auto space-y-6 relative z-10">
         {/* Filters Section */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 flex flex-wrap gap-4 items-end">
+        <div className="bg-white/70 backdrop-blur-xl p-6 rounded-2xl shadow-xl border border-white/40 flex flex-wrap gap-4 items-end">
           <div className="flex flex-col gap-1.5 flex-grow max-w-xs">
-            <label className="text-sm font-medium text-zinc-700">
+            <label className="text-sm font-medium text-zinc-800">
               Filter by Status
             </label>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-900/10"
+              className="px-4 py-2 rounded-lg bg-white/50 border border-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm transition-all"
             >
               <option value="">All Statuses</option>
               <option value="pending">Pending</option>
@@ -79,7 +92,7 @@ const AdminDashboard = () => {
           </div>
 
           <div className="flex flex-col gap-1.5 flex-grow max-w-sm">
-            <label className="text-sm font-medium text-zinc-700">
+            <label className="text-sm font-medium text-zinc-800">
               Filter by User ID
             </label>
             <input
@@ -87,7 +100,7 @@ const AdminDashboard = () => {
               placeholder="Enter exact User MongoDB ID..."
               value={userIdFilter}
               onChange={(e) => setUserIdFilter(e.target.value)}
-              className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-900/10"
+              className="px-4 py-2 rounded-lg bg-white/50 border border-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm transition-all text-zinc-900"
             />
           </div>
 
@@ -97,29 +110,29 @@ const AdminDashboard = () => {
         </div>
 
         {/* Data Table Section */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 overflow-hidden">
           {loading ? (
-            <div className="text-center py-12 text-zinc-500 animate-pulse">
+            <div className="text-center py-12 text-zinc-600 animate-pulse font-medium">
               Loading system tasks...
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="px-6 py-4 text-sm font-semibold text-zinc-600">
+                  <tr className="bg-black/5 border-b border-black/5">
+                    <th className="px-6 py-4 text-sm font-semibold text-zinc-800">
                       Task Title
                     </th>
-                    <th className="px-6 py-4 text-sm font-semibold text-zinc-600">
+                    <th className="px-6 py-4 text-sm font-semibold text-zinc-800">
                       Assigned To
                     </th>
-                    <th className="px-6 py-4 text-sm font-semibold text-zinc-600">
+                    <th className="px-6 py-4 text-sm font-semibold text-zinc-800">
                       Role
                     </th>
-                    <th className="px-6 py-4 text-sm font-semibold text-zinc-600">
+                    <th className="px-6 py-4 text-sm font-semibold text-zinc-800">
                       Status
                     </th>
-                    <th className="px-6 py-4 text-sm font-semibold text-zinc-600 text-right">
+                    <th className="px-6 py-4 text-sm font-semibold text-zinc-800 text-right">
                       Created
                     </th>
                   </tr>
@@ -129,7 +142,7 @@ const AdminDashboard = () => {
                     <tr>
                       <td
                         colSpan="5"
-                        className="px-6 py-8 text-center text-zinc-500"
+                        className="px-6 py-8 text-center text-zinc-600 font-medium"
                       >
                         No tasks found matching these filters.
                       </td>
@@ -138,7 +151,7 @@ const AdminDashboard = () => {
                     tasks.map((task) => (
                       <tr
                         key={task._id}
-                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                        className="border-b border-black/5 hover:bg-white/50 transition-colors"
                       >
                         <td className="px-6 py-4 relative">
                           <div className="font-medium text-zinc-900">

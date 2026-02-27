@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/auth.service";
 import { taskService } from "../services/task.service";
@@ -53,29 +53,39 @@ const UserDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans p-8">
-      <div className="max-w-6xl mx-auto flex justify-between items-center mb-8">
+    <div className="min-h-screen font-sans p-8 relative">
+      {/* Background Image Container */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/Landing.png"
+          alt="Scenic landscape"
+          className="w-full h-full object-cover"
+        />
+        {/* Soft black overlay to ensure form readability */}
+        <div className="absolute inset-0 bg-black/15"></div>
+      </div>
+
+      <div className="max-w-6xl mx-auto flex justify-between items-center mb-8 relative z-10">
         <div className="flex items-center gap-2">
-          <span className="text-xl">✳</span>
-          <h1 className="text-2xl font-bold tracking-tight text-zinc-900">
-            My Tasks
+          <h1 className="text-2xl font-bold tracking-tight text-white drop-shadow-sm">
+            My Assigned Tasks
           </h1>
         </div>
         <Button
           onClick={handleLogout}
-          className="px-5 py-2 text-sm bg-white text-black border-gray-300 hover:bg-gray-100"
+          className="px-5 py-2 text-sm bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-md shadow-sm"
         >
           Logout
         </Button>
       </div>
 
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto relative z-10">
         {loading ? (
-          <div className="text-center py-12 text-zinc-500 animate-pulse">
+          <div className="text-center py-12 text-white/80 animate-pulse font-medium">
             Loading your tasks...
           </div>
         ) : tasks.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-12 text-center">
+          <div className="bg-white/70 backdrop-blur-xl rounded-2xl shadow-xl border border-white/40 p-12 text-center">
             <h3 className="text-lg font-medium text-zinc-900 mb-2">
               You're all caught up!
             </h3>
@@ -88,7 +98,7 @@ const UserDashboard = () => {
             {tasks.map((task) => (
               <div
                 key={task._id}
-                className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 transition-all hover:shadow-md flex flex-col h-full"
+                className="bg-white/80 backdrop-blur-lg p-6 rounded-2xl shadow-lg border border-white/50 transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col h-full"
               >
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="font-semibold text-lg text-zinc-900">
