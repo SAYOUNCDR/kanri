@@ -2,18 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/auth.service";
 import { taskService } from "../services/task.service";
+import { getAccessToken } from "../services/api";
+import { jwtDecode } from "jwt-decode";
 import Button from "../components/reusables/Button";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   // Filters state
   const [statusFilter, setStatusFilter] = useState("");
   const [userIdFilter, setUserIdFilter] = useState("");
 
   useEffect(() => {
+    const token = getAccessToken();
+    if (token && !user) {
+      setUser(jwtDecode(token));
+    }
     fetchTasks();
   }, [statusFilter, userIdFilter]); // Re-fetch whenever filters change
 
@@ -57,11 +64,22 @@ const AdminDashboard = () => {
       </div>
 
       <div className="max-w-6xl mx-auto flex justify-between items-center mb-8 relative z-10">
-        <div className="flex items-center gap-2 flex-col">
-          <h1 className="text-2xl font-bold text-white drop-shadow-sm">
-            Admin Console
-          </h1>
-          <span className="text-sm text-white/70 drop-shadow-sm">
+        <div className="flex items-start gap-1 flex-col">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-white drop-shadow-sm">
+              Admin Console
+            </h1>
+            {user && (
+              <div className="hidden sm:flex flex-row items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20 select-none">
+                <span className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]"></span>
+                <span className="text-sm font-medium text-white">
+                  {user.username}
+                </span>
+                <span className="text-xs text-white/60">({user.email})</span>
+              </div>
+            )}
+          </div>
+          <span className="text-sm text-white/70 drop-shadow-sm mt-1">
             {new Date().toLocaleString()}
           </span>
         </div>

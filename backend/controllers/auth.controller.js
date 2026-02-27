@@ -30,7 +30,7 @@ const loginUser = async (req, res) => {
         if (!isPasswordValid) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
-        const accessToken = generateAccessToken(user._id, user.role, user.tokenVersion);
+        const accessToken = generateAccessToken(user._id, user.role, user.tokenVersion, user.username, user.email);
         const refreshToken = generateRefreshToken(user._id, user.role);
 
         res.cookie("refreshToken", refreshToken, {
@@ -62,7 +62,7 @@ const refreshToken = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        const accessToken = generateAccessToken(user._id, user.role, user.tokenVersion);
+        const accessToken = generateAccessToken(user._id, user.role, user.tokenVersion, user.username, user.email);
 
         res.status(200).json({ accessToken });
     } catch (error) {

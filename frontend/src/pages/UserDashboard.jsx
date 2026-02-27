@@ -2,14 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../services/auth.service";
 import { taskService } from "../services/task.service";
+import { getAccessToken } from "../services/api";
+import { jwtDecode } from "jwt-decode";
 import Button from "../components/reusables/Button";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const token = getAccessToken();
+    if (token) {
+      setUser(jwtDecode(token));
+    }
     fetchTasks();
   }, []);
 
@@ -66,10 +73,19 @@ const UserDashboard = () => {
       </div>
 
       <div className="max-w-6xl mx-auto flex justify-between items-center mb-8 relative z-10">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <h1 className="text-2xl font-bold tracking-tight text-white drop-shadow-sm">
             My Assigned Tasks
           </h1>
+          {user && (
+            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-white/10 backdrop-blur-md rounded-full border border-white/20 select-none">
+              <span className="w-2 h-2 rounded-full bg-green-400"></span>
+              <span className="text-sm font-medium text-white">
+                {user.username}
+              </span>
+              <span className="text-xs text-white/60">({user.email})</span>
+            </div>
+          )}
         </div>
         <Button
           onClick={handleLogout}
@@ -98,7 +114,7 @@ const UserDashboard = () => {
             {tasks.map((task) => (
               <div
                 key={task._id}
-                className="bg-white/80 backdrop-blur-lg p-6 rounded-2xl shadow-lg border border-white/50 transition-all hover:shadow-xl hover:-translate-y-1 flex flex-col h-full"
+                className="bg-white/80 backdrop-blur-lg p-6 rounded-2xl shadow-lg border border-white/50 flex flex-col h-full"
               >
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="font-semibold text-lg text-zinc-900">
