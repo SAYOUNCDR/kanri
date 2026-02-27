@@ -69,26 +69,28 @@ const AdminDashboard = () => {
             <h1 className="text-2xl font-bold text-white drop-shadow-sm">
               Admin Console
             </h1>
-            {user && (
-              <div className="hidden sm:flex flex-row items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20 select-none">
-                <span className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]"></span>
-                <span className="text-sm font-medium text-white">
-                  {user.username}
-                </span>
-                <span className="text-xs text-white/60">({user.email})</span>
-              </div>
-            )}
           </div>
           <span className="text-sm text-white/70 drop-shadow-sm mt-1">
             {new Date().toLocaleString()}
           </span>
         </div>
-        <Button
-          onClick={handleLogout}
-          className="px-5 py-2 text-sm bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-md shadow-sm"
-        >
-          Logout
-        </Button>
+        <div className="flex flex-col items-end gap-2">
+          <Button
+            onClick={handleLogout}
+            className="px-5 py-2 text-sm bg-white/20 text-white border-white/30 hover:bg-white/30 backdrop-blur-md shadow-sm w-full sm:w-auto"
+          >
+            Logout
+          </Button>
+          {user && (
+            <div className="hidden sm:flex flex-row items-center gap-2 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/20 select-none">
+              <span className="w-2 h-2 rounded-full bg-blue-400 shadow-[0_0_8px_rgba(96,165,250,0.8)]"></span>
+              <span className="text-sm font-medium text-white">
+                {user.username}
+              </span>
+              <span className="text-xs text-white/60">({user.email})</span>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="max-w-6xl mx-auto space-y-6 relative z-10">
