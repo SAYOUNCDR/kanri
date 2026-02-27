@@ -79,5 +79,14 @@ const logoutUser = (req, res) => {
     res.status(200).json({ message: "Logged out successfully" });
 }
 
-module.exports = { registerUser, loginUser, refreshToken, logoutUser };
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({}, 'username email').sort({ username: 1 });
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
+module.exports = { registerUser, loginUser, refreshToken, logoutUser, getAllUsers };
 

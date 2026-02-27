@@ -12,6 +12,8 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
+  const [users, setUsers] = useState([]); // List of all users for the dropdown
+
   // Filters state
   const [statusFilter, setStatusFilter] = useState("");
   const [userIdFilter, setUserIdFilter] = useState("");
@@ -22,7 +24,17 @@ const AdminDashboard = () => {
       setUser(jwtDecode(token));
     }
     fetchTasks();
+    fetchAllUsers();
   }, [statusFilter, userIdFilter]); // Re-fetch whenever filters change
+
+  const fetchAllUsers = async () => {
+    try {
+      const usersList = await authService.getAllUsers();
+      setUsers(usersList);
+    } catch (error) {
+      console.error("Failed to fetch users list", error);
+    }
+  };
 
   const fetchTasks = async () => {
     setLoading(true);
@@ -113,20 +125,21 @@ const AdminDashboard = () => {
 
           <div className="flex flex-col gap-1.5 flex-grow max-w-sm">
             <label className="text-sm font-medium text-zinc-800">
-              Filter by User ID
+              Filter by User
             </label>
-            <input
-              type="text"
-              placeholder="Enter exact User MongoDB ID..."
+            <select
               value={userIdFilter}
               onChange={(e) => setUserIdFilter(e.target.value)}
               className="px-4 py-2 rounded-lg bg-white/50 border border-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-sm transition-all text-zinc-900"
-            />
+            >
+              <option value="">All Users</option>
+              {users.map((u) => (
+                <option key={u._id} value={u._id}>
+                  {u.username} ({u.email})
+                </option>
+              ))}
+            </select>
           </div>
-
-          <Button onClick={fetchTasks} className="py-2.5 px-6 ml-auto">
-            Refresh Data
-          </Button>
         </div>
 
         {/* Data Table Section */}

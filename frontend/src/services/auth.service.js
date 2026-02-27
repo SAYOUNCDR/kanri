@@ -21,5 +21,11 @@ export const authService = {
         // userData should be { username, email, password, role }
         const response = await api.post('/users/register-user', userData);
         return response.data;
+    },
+
+    // Fetch all users (Only accessible by Admins)
+    getAllUsers: async () => {
+        const response = await api.get('/users/get-all-users');
+        return response.data;
     }
 };
