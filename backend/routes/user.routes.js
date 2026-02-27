@@ -4,7 +4,7 @@ const { registerUser, loginUser } = require("../controllers/auth.controller");
 const { requireAuth, requireAdmin } = require("../middlewares/auth.middleware");
 
 
-router.post("/register", requireAuth, requireAdmin, registerUser);
+router.post("/register-user", requireAuth, requireAdmin, registerUser);
 router.post("/login", requireAuth, loginUser);
 
 
